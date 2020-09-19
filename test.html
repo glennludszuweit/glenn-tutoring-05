@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="texsearcht" onkeyup="filter()" placeholder="Search company" />
+    <section></section>
+  </body>
+  <script>
+    const container = document.querySelector('section');
+    const input = document.querySelector('input');
+    const h1 = document.getElementsByTagName('h1');
+    let newArr = [];
+    (async function () {
+      const key = 'btfnh1748v6rl6gbnml0';
+      const url = `https://finnhub.io/api/v1/stock/symbol?exchange=US&token=${key}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      let output = data.map((el) => {
+        return newArr.push(el);
+      });
+      localStorage.setItem('companyInfo', JSON.stringify(newArr));
+      // let LSData = JSON.parse(localStorage.getItem('companyInfo'));
+      let GET = localStorage.getItem('companyInfo');
+      console.log(GET);
+      let display = JSON.parse(GET).map((el) => {
+        console.log(el.description);
+        return `
+          <h1><a href='#'>${el.description}</a></h1>
+        `;
+      });
+      container.innerHTML = display.join('');
+    })();
+
+    function filter() {
+      let a, filter, textValue;
+      for (i = 0; i < h1.length; i++) {
+        a = h1[i].getElementsByTagName('a')[0];
+        filter = input.value.toUpperCase();
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          h1[i].style.display = '';
+        } else {
+          h1[i].style.display = 'none';
+        }
+      }
+    }
+  </script>
+</html>
